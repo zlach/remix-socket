@@ -1,11 +1,19 @@
 import { json } from "@remix-run/node";
 
-import { Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useCatch } from "@remix-run/react";
 
 import { getPosts } from "~/models/post.server";
 
 export const loader = async () => {
-  return json({ posts: await getPosts() });
+  const posts = await getPosts();
+
+  if (!posts.length) {
+    throw new Response("No posts found", {
+      status: 404,
+    });
+  }
+
+  return json({ posts });
 };
 
 export default function Posts() {
@@ -28,5 +36,34 @@ export default function Posts() {
       </ul>
       <Outlet />
     </main>
+  );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  if (caught.status === 404) {
+    return (
+      <div>
+        <div>There are no posts to display.</div>
+        <Link to="/">
+          {'<'} back to home
+        </Link>
+      </div>
+    );
+  }
+  throw new Error(
+    `Unexpected caught response with status: ${caught.status}`
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <div>
+        <div>Whoops, something went wrong.</div>
+        <Link to="/">
+          {'<'} back to home
+        </Link>
+    </div>
   );
 }
