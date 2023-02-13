@@ -23,7 +23,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   invariant(typeof userIdSelf === "string", "need userId from session")
 
   const thread = await getThread(userIdSelf, userId)
-
+console.log(thread);
   return json({ userIdSelf, thread })
 };
 

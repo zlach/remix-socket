@@ -13,18 +13,13 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  threadsInitiated Thread[] @relation("initiator")
-  threadsResponded Thread[] @relation("responder")
 }
 
 model Thread {
   lookupId              String  @unique @default(cuid())
 
-  initiator       User     @relation(name: "initiator", fields: [initiatorId], references: [id])
   initiatorId     String
 
-  responder       User     @relation(name: "responder", fields: [responderId], references: [id])
   responderId     String
 
   messages Message[]
