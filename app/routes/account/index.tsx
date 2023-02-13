@@ -24,7 +24,7 @@ export default function Login() {
 
 
   const [showCode, setShowCode] = useState<boolean>();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault()
