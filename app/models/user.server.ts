@@ -23,7 +23,7 @@ export async function createUser(
 ) {
   const initiatorId = process.env.ZACH_SUB;
   if (initiatorId) {
-    console.log(initiatorId, user.id)
+
     const { lookupId } = await createThread({ initiatorId, responderId: user.id, })
     await createMessage({
       threadId: lookupId,

@@ -46,6 +46,21 @@ async function seed() {
     }
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      id: process.env.ZACH_SUB
+    }
+  })
+
+  if (!user && typeof process.env.ZACH_SUB === "string") {
+    await prisma.user.create({
+      data: {
+        id: process.env.ZACH_SUB,
+        email: "zacharysp@gmail.com"
+      }
+    })
+  }
+
   console.log(`Database has been seeded. 🌱`);
 }
 
