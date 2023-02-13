@@ -1,21 +1,14 @@
-# fly.toml file generated for misty-thunder-484 on 2023-02-13T04:38:57-06:00
+# fly.toml file generated for polished-violet-1488 on 2023-02-13T05:08:15-06:00
 
-app = "misty-thunder-484"
+app = "polished-violet-1488"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
 [env]
-  DATABASE_URL = "file:/data/sqlite.db"
-  PORT = "8080"
 
 [experimental]
-  cmd = "start_with_migrations.sh"
-  entrypoint = "sh"
-
-[[mounts]]
-  destination = "/data"
-  source = "data"
+  auto_rollback = true
 
 [[services]]
   http_checks = []
