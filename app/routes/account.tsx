@@ -10,7 +10,6 @@ export default function Account() {
     async function retrieveAuthUser() {
       try {
         await Auth.currentAuthenticatedUser()
-        navigate('/chat')
       } catch (error) {
         // do nothing...
       }

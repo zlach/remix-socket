@@ -2,19 +2,25 @@ import { prisma } from "~/db.server";
 
 import type { User } from "@prisma/client"
 
-export async function getUsers() {
-  return prisma.user.findMany();
+export async function getUsers(id: string) {
+  return prisma.user.findMany({
+    where: {
+      id: {
+        not: id,
+      }
+    }
+  });
 }
 
 export async function getUser(email: string) {
   return prisma.user.findUnique({ where: { email } });
 }
 
-// export async function createPost(
-//   post: Pick<Post, "id" | "title" | "markdown">
-// ) {
-//   return prisma.post.create({ data: post });
-// }
+export async function createUser(
+  user: Pick<User, "id" | "email">
+) {
+  return prisma.user.create({ data: user });
+}
 
 // export async function updatePost(
 //   id: Post["id"],
