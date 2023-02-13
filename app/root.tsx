@@ -13,6 +13,7 @@ import {
 import { connect, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { wsContext } from "./ws-context";
+import { json } from '@remix-run/node';
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -21,48 +22,38 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader() {
-  Amplify.configure({ Auth: {
-    // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-    identityPoolId: process.env.REACT_APP_IDENTITY_POOL,
-
-    // REQUIRED - Amazon Cognito Region
-    region: process.env.REACT_APP_REGION,
-
-    // OPTIONAL - Amazon Cognito User Pool ID
-    userPoolId: process.env.REACT_APP_USER_POOL,
-
-    // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-    userPoolWebClientId: process.env.REACT_APP_CLIENT_ID,
-
-    // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
-    mandatorySignIn: true,
-  } })
-
-  return null;
+  return json({
+    ENV: {
+      REACT_APP_IDENTITY_POOL: process.env.REACT_APP_IDENTITY_POOL,
+      REACT_APP_REGION: process.env.REACT_APP_REGION,
+      REACT_APP_USER_POOL: process.env.REACT_APP_USER_POOL,
+      REACT_APP_CLIENT_ID: process.env.REACT_APP_CLIENT_ID,
+    }
+  });
 }
 
 export default function App() {
-  // const loaderData = useLoaderData<typeof loader>();
+  const loaderData = useLoaderData<typeof loader>();
+  
 
-  // if (loaderData && loaderData.ENV) {
-  //   console.log('aws ran')
-  //   Amplify.configure({ Auth: {
-  //     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
-  //     identityPoolId: loaderData?.ENV?.REACT_APP_IDENTITY_POOL,
+  if (loaderData && loaderData.ENV) {
+    Amplify.configure({ Auth: {
+      // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
+      identityPoolId: loaderData?.ENV?.REACT_APP_IDENTITY_POOL,
   
-  //     // REQUIRED - Amazon Cognito Region
-  //     region: loaderData?.ENV?.REACT_APP_REGION,
+      // REQUIRED - Amazon Cognito Region
+      region: loaderData?.ENV?.REACT_APP_REGION,
   
-  //     // OPTIONAL - Amazon Cognito User Pool ID
-  //     userPoolId: loaderData?.ENV?.REACT_APP_USER_POOL,
+      // OPTIONAL - Amazon Cognito User Pool ID
+      userPoolId: loaderData?.ENV?.REACT_APP_USER_POOL,
   
-  //     // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-  //     userPoolWebClientId: loaderData?.ENV?.REACT_APP_CLIENT_ID,
+      // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+      userPoolWebClientId: loaderData?.ENV?.REACT_APP_CLIENT_ID,
   
-  //     // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
-  //     mandatorySignIn: true,
-  //   } })
-  // }
+      // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
+      mandatorySignIn: true,
+    } })
+  }
 
   let [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
 

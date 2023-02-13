@@ -1,9 +1,10 @@
 import { Auth } from "aws-amplify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ActionArgs, redirect,
 } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { Hub } from 'aws-amplify'
+import { useNavigate } from "@remix-run/react";
 import { badRequest, goodRequest } from "~/utils/request.server";
 
 import { prisma } from "~/db.server";
@@ -13,6 +14,18 @@ import {
   useActionData,
   Form,
 } from "@remix-run/react";
+
+Hub.listen('auth', ({ payload }) => {
+  const { event } = payload
+  if (event === 'autoSignIn') {
+    console.log('autosignin worked')
+    // navigate('/chat')
+  } else if (event === 'autoSignIn_failure') {
+    console.log('autosignin failed')
+    // redirect to sign in page\
+    // navigate('/')
+  }
+})
 
 function validateEmail(email: unknown) {
   if (typeof email !== "string" || !email.includes("@")) {
@@ -31,6 +44,7 @@ export const action = async ({ request }: ActionArgs) => {
   const loginType = form.get("loginType");
   const email = form.get("email");
   const password = form.get("password");
+  const code = form.get("code");
 
   if (
     typeof loginType !== "string" ||
@@ -73,6 +87,24 @@ export const action = async ({ request }: ActionArgs) => {
       return redirect('/chat');
     }
     case "register": {
+      if (code && typeof code !== "string") {
+        return badRequest({
+          fieldErrors: null,
+          fields: null,
+          successMessage: null,
+          formError: `Form not submitted correctly.`,
+        });
+      } else if (code) {
+        await Auth.confirmSignUp(email, code)
+
+        return goodRequest({
+          successMessage: `Confirm Success`,
+          fields,
+          fieldErrors: null,
+          formError: null,
+        });
+      }
+
       const userExists = await prisma.user.findFirst({
         where: { email },
       });
@@ -98,7 +130,7 @@ export const action = async ({ request }: ActionArgs) => {
       })
 
       return goodRequest({
-        successMessage: `Show Confirm`,
+        successMessage: `Register Success`,
         fields,
         fieldErrors: null,
         formError: null,
@@ -205,14 +237,14 @@ export default function Login() {
               </p>
             ) : null}
           </div>
-          {showCode || actionData?.successMessage ? <div>
+          {showCode || actionData?.successMessage === "Register Success" ? <div>
             <label htmlFor="code-input">Code</label>
             <input
               type="text"
               id="code-input"
               name="code"
             />
-          </div> : <div style={{ cursor: 'pointer' }} onClick={() => setShowCode(true)}>Show Confirmation Code Input</div>}
+          </div> : <div style={{ cursor: 'pointer', color: 'blue' }} onClick={() => setShowCode(true)}>Show Confirmation Code Input</div>}
           <div id="form-error-message">
             {actionData?.formError ? (
               <p
