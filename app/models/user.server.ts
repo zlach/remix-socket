@@ -29,7 +29,7 @@ export async function createUser(
       threadId: lookupId,
       senderId: initiatorId,
       recipientId: user.id,
-      body: "Thank you for looking at my app. I wanted to get Sockets going, but didn't quite have the time before Monday. Feel free to leave me a message! Or, you can create another user to message."
+      body: "Thank you for looking at my app. I wanted to get Sockets going, but didn't quite have the time. So you'll need to refresh the page to see new incoming messages. Feel free to leave me a message! Or, you can create another user to message."
     })
   }
   return prisma.user.create({ data: user });
