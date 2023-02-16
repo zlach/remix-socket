@@ -158,7 +158,7 @@ export default function Login() {
               />{" "}
               Register
             </label>
-            {loginType === "register" && <div><i>A code will be sent to your email. Email and password must be submitted with code.</i></div>}
+            {loginType === "register" && <div><i>A code will be sent to your email. Email and password must be submitted with code. Please check spam folder if can't find code.</i></div>}
           </fieldset>
           <div>
             <label htmlFor="email-input">Email</label>

@@ -73,6 +73,8 @@ a separate lookupId on the Thread table
 - The seeding tool did not work when deploying to Fly. I spent a long time trying to make it work,
 but couldn't figure it out. Ultimately I had to seed the db manually in the Root of my project,
 which is obviously a hack
+- Prisma doesn't seem to enable or at least encourage locking, so I'm not sure if versioning is
+necesary with prisma.
       `.trim(),
     },
     {
@@ -97,6 +99,8 @@ The way that it encourages you to work with lower-level browser functionality, h
 really makes you have to think about you're doing, which I like. It does make a few things
 verbose and does make some things more challenging, but I like the challenge becuase it is
 so educative.
+- Seems like the required index files in the route folders can sometimes be unnecessary and
+redundant, but maybe I just don't understand
 - I am curious about validation, especially on the backend. Usually I run the data that hits
 my API through joi schemas before I do any work with it. Perhaps that's less necessary with
 TypeScript.
