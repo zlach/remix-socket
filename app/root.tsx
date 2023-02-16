@@ -14,6 +14,7 @@ import { connect, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { wsContext } from "./ws-context";
 import { json } from '@remix-run/node';
+import { seed } from './utils/seed.server';
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -22,6 +23,8 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader() {
+  await seed()
+  
   return json({
     ENV: {
       REACT_APP_IDENTITY_POOL: process.env.REACT_APP_IDENTITY_POOL,

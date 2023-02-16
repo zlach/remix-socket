@@ -1,11 +1,9 @@
 import { Auth } from "aws-amplify";
-import { useState } from "react";
-import type { ActionArgs, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-// import { redirect } from "@remix-run/node";
 import { Outlet, useNavigate, useLoaderData, Link, Form } from "@remix-run/react";
 import { useEffect } from "react";
-import { commitSession, getSession } from "~/utils/session.server";
+import { getSession } from "~/utils/session.server";
 import { getUsers } from "~/models/user.server";
 
 export const loader = async ({ request }: ActionArgs) => {
@@ -16,12 +14,6 @@ export const loader = async ({ request }: ActionArgs) => {
   const userId = session.get("userId")
     
   const users = await getUsers(userId);
-
-  // if (!users.length) {
-  //   throw new Response("No users found", {
-  //     status: 404,
-  //   });
-  // }
 
   return json({ users });
 };

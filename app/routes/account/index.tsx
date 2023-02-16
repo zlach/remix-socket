@@ -1,6 +1,7 @@
 import type { ActionArgs } from "@remix-run/node";
 import { Auth } from "aws-amplify";
-import { SyntheticEvent, useEffect} from "react";
+import type { SyntheticEvent} from "react";
+import { useEffect} from "react";
 import { useState } from "react";
 import { Hub } from 'aws-amplify'
 import { useFetcher, useNavigate } from "@remix-run/react";
