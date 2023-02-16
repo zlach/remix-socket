@@ -73,8 +73,7 @@ a separate lookupId on the Thread table
 - The seeding tool did not work when deploying to Fly. I spent a long time trying to make it work,
 but couldn't figure it out. Ultimately I had to seed the db manually in the Root of my project,
 which is obviously a hack
-- Prisma doesn't seem to enable or at least encourage locking, so I'm not sure if versioning is
-necesary with prisma.
+- Prisma doesn't seem to enable or at least encourage locking, so is versioning necesary with prisma?
       `.trim(),
     },
     {
@@ -82,11 +81,11 @@ necesary with prisma.
       markdown: `  
 - Obviously not a lot going on with my styles
 - I agree with the Remix documentation that lots of React styling solutions seem a bit over-engineered
-- Tailwind seems chill. I didn't have a chance to work with it, but I like the idea of sticking with
-classes. I normally achieve much of my styling with bootstrap classes.
+- Tailwind, which seems to be a popular pairing with Remix seems chill. I didn't have a chance to work
+with it, but I like the idea of sticking with classes. I normally achieve much of my styling with bootstrap classes.
 - I noticed that cloudstore.co uses MUI. MUI styling has always seemed a little difficult to me, and
 I typically avoid using it for that reason. With that said, it's a major technology, and I have used it...
-I'm definitely interested in learning more about it
+I'm definitely interested in learning more about it and using it some more.
       `.trim(),
     },
     {
